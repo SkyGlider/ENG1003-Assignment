@@ -34,7 +34,7 @@ function getCoordinates(theSensor){
   data[1] = Math.asin(2*(w*y - x*z));
   data[2] = Math.atan2(2*(w*z + x*y),1 - 2*(Math.pow(y,2)+Math.pow(z,2)));
 
-  document.getElementById("deviceTilt").innerHTML = "alpha: " + (data[1]*toDeg).toFixed(0) + "<br>" + "beta: " + (data[0]*toDeg).toFixed(0) + "<br>" + "gamma: " + (data[2]*toDeg).toFixed(0);
+  document.getElementById("deviceTilt").innerHTML = "alpha: " + (data[1]*toDeg).toFixed(0) + "°" + "<br>" + "beta: " + (data[0]*toDeg).toFixed(0) + "°" + "<br>" + "gamma: " + (data[2]*toDeg).toFixed(0) + "°" ;
 
   return data[0];
 
@@ -78,7 +78,7 @@ function setUserHeight(){
 	}while(isNaN(newHeight))
 
 	userHeight = newHeight;
-	document.getElementById("heightOfCamera").innerHTML = userHeight;
+	document.getElementById("heightOfCamera").innerHTML = userHeight + "m";
 
 	if (topAngle != null && baseAngle != null){
 	  calculateBtn.disabled = false;
@@ -88,7 +88,7 @@ function setUserHeight(){
 function setBase(){
 
   baseAngle = getCoordinates(devSensor);
-  document.getElementById("baseAngle").innerHTML = baseAngle.toFixed(3);
+  document.getElementById("baseAngle").innerHTML = (baseAngle*toDeg).toFixed(2) + "°";
 
   if (topAngle != null){
 	  calculateBtn.disabled = false;
@@ -98,7 +98,7 @@ function setBase(){
 function setTop(){
 
   topAngle = getCoordinates(devSensor);
-  document.getElementById("topAngle").innerHTML = topAngle.toFixed(3);
+  document.getElementById("topAngle").innerHTML = (topAngle*toDeg).toFixed(2) + "°";
 
   if (baseAngle != null){
 	  calculateBtn.disabled = false;
@@ -108,12 +108,11 @@ function setTop(){
 function doMath(){
 
 	let objDistance = parseFloat(userHeight) * Math.tan(baseAngle);
-	document.getElementById("distanceOfObject").innerHTML = objDistance.toFixed(3);
+	document.getElementById("distanceOfObject").innerHTML = objDistance.toFixed(2) + "m";
 
-	let sumOfAngle = baseAngle + topAngle;
-	let diffOfAngle = (sumOfAngle - Math.PI/2).toFixed(3) ;
+	let diffOfAngle = topAngle - Math.PI/2 ;
 	let objHeight = parseFloat(userHeight) + objDistance * Math.tan(diffOfAngle);
-	document.getElementById("heightOfObject").innerHTML = objHeight.toFixed(3);
+	document.getElementById("heightOfObject").innerHTML = objHeight.toFixed(2)+"m";
 
 	calculateBtn.disabled = true;
 }
