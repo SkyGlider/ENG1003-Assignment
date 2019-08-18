@@ -9,7 +9,7 @@ try {
   var devSensor =  new AbsoluteOrientationSensor();
 
   devSensor.onerror = reportError;
-  devSensor.addEventListener('reading',() => getCoordinates(devSensor))
+  devSensor.addEventListener('reading',() => getCoordinates(devSensor));
   devSensor.start();
 } catch (e) {
   console.log(e);
@@ -53,7 +53,7 @@ function smoothen(theSensor){
 		y_cum += theSensor.quaternion[1];
 		z_cum += theSensor.quaternion[2];
 		w_cum += theSensor.quaternion[3];
-		count++
+		count++;
 	}
 
 
@@ -62,7 +62,7 @@ function smoothen(theSensor){
 		yval:y_cum/N,
 		zval:z_cum/N,
 		wval:w_cum/N
-	}
+	};
 }
 
 function setUserHeight(){
@@ -72,10 +72,10 @@ function setUserHeight(){
 		newHeight = prompt("Enter Your Height in meters: ",userHeight);
 
 		if(isNaN(newHeight)){
-			alert("invalid height")
+			alert("invalid height");
 		}
 
-	}while(isNaN(newHeight))
+	}while(isNaN(newHeight));
 
 	userHeight = newHeight;
 	document.getElementById("heightOfCamera").innerHTML = userHeight + "m";
