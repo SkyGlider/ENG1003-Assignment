@@ -3,7 +3,7 @@ let userHeight = "1";
 let baseAngle = null;
 let topAngle = null;
 
-
+let  notification = document.querySelector('.mdl-js-snackbar');
 let calculateButton = document.getElementById("calculateButton");
 
 
@@ -21,7 +21,6 @@ try {
 	console.log(error);
 
 }
-
 
 setUserHeight();
 
@@ -115,7 +114,7 @@ function setBaseAngle(){
 	baseAngle = getCoordinates(deviceSensor);
 	document.getElementById("baseAngle").innerHTML = (baseAngle*toDegree).toFixed(2) + "°";
 
-	var notification = document.querySelector('.mdl-js-snackbar');
+	//mdl snackbar
 	var data = {
   	message: 'Base Angle Recorded',
   	timeout: 2000
@@ -137,7 +136,6 @@ function setTopAngle(){
 	document.getElementById("topAngle").innerHTML = (topAngle*toDegree).toFixed(2) + "°";
 
 	//mdl snackbar
-	var notification = document.querySelector('.mdl-js-snackbar');
 	var data = {
   	message: 'Top Angle Recorded',
   	timeout: 2000
