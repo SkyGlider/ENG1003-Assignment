@@ -113,7 +113,13 @@ function setBaseAngle(){
 
 	baseAngle = getCoordinates(deviceSensor);
 	document.getElementById("baseAngle").innerHTML = (baseAngle*toDegree).toFixed(2) + "°";
-	alert("Base angle is recorded");
+
+	var notification = document.querySelector('.mdl-js-snackbar');
+	var data = {
+  	message: 'Base Angle Recorded',
+  	timeout: 2000
+	};
+	notification.MaterialSnackbar.showSnackbar(data);
 
 	if (topAngle != null){
 
@@ -128,7 +134,14 @@ function setTopAngle(){
 
 	topAngle = getCoordinates(deviceSensor);
 	document.getElementById("topAngle").innerHTML = (topAngle*toDegree).toFixed(2) + "°";
-	alert("Top angle is recorded");
+
+	//mdl snackbar
+	var notification = document.querySelector('.mdl-js-snackbar');
+	var data = {
+  	message: 'Top Angle Recorded',
+  	timeout: 2000
+	};
+	notification.MaterialSnackbar.showSnackbar(data);
 
 	if (baseAngle != null){
 
@@ -156,7 +169,7 @@ function doCalculation(){
 
 	else if(objectHeight==0){
 
-		alert("Base angle should not be the same as the top angle");
+		alert("Base level should not be the same as the top level");
 		document.getElementById("heightOfObject").innerHTML = objectHeight.toFixed(2)+"m";
 		calculateButton.disabled = true;
 
@@ -166,7 +179,7 @@ function doCalculation(){
 
 		if (baseAngle>topAngle){
 
-			alert("Base angle should not be larger than top angle");
+			alert("Base level should not be higher than top level");
 			document.getElementById("heightOfObject").innerHTML = "null";
 			document.getElementById("distanceOfObject").innerHTML = "null";
 			calculateButton.disabled = true;
@@ -175,7 +188,7 @@ function doCalculation(){
 
 		else if (topAngle>baseAngle){
 
-			alert("Object's base cannot be higher than the referenced height");
+			alert("Object's base level cannot be higher than the referenced height's base level");
 			document.getElementById("heightOfObject").innerHTML = "null";
 			document.getElementById("distanceOfObject").innerHTML = "null";
 			calculateButton.disabled = true;
