@@ -89,13 +89,14 @@ function setUserHeight(){
 
 		newHeight = prompt("Enter Your Height in metres (Reference Height): ",userHeight);
 
-		if(isNaN(newHeight)  && newHeight<0){
+
+		if(isNaN(newHeight)  || newHeight<0 || newHeight == null){
 
 			alert("invalid height");
 
 		}
 
-	}while(isNaN(newHeight));
+	}while(isNaN(newHeight)|| newHeight<0 || newHeight == null);
 
 	userHeight = newHeight;
 	document.getElementById("heightOfCamera").innerHTML = userHeight + "m";
