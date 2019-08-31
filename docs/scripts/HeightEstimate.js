@@ -1,4 +1,13 @@
-const toDegree = (180/Math.PI);
+/*
+ * Purpose: This file is designed to calculate the height and distance of objects from the user using data obtained from a device's sensors based on its orientation.
+ * Team   : 190
+ * Authors: Andrew Pang Yong Chen
+ *	        Angel Ern Tang
+ *          Hong Xiang Huan
+ *          Yong Kim Chim
+*/
+
+const TO_DEGREE = (180/Math.PI);
 let userHeight = "1";
 let baseAngle = null;
 let topAngle = null;
@@ -7,14 +16,21 @@ let  notification = document.querySelector('.mdl-js-snackbar');
 let calculateButton = document.getElementById("calculateButton");
 
 
-//Feature 1 Device Orientation
+// Feature 1: Sensing Device Orientation
+
 try {
 
-	var deviceSensor =  new AbsoluteOrientationSensor(); //Create a variable devSensor(device sensor) to store the object from class Absolute Orientation Sensor
+  // Create a variable devSensor(device sensor) to store the object from class Absolute Orientation Sensor
+	var deviceSensor =  new AbsoluteOrientationSensor();
 
-	deviceSensor.onerror = reportError; //If there is error, devSensor will give back error
-	deviceSensor.addEventListener('reading',() => getCoordinates(deviceSensor)); //Get the coordinates from devSensor via user function getCoordinates()
-	deviceSensor.start();
+  // If there is error, devSensor will give back error
+	deviceSensor.onerror = reportError;
+
+  // Get the coordinates from devSensor via user function getCoordinates()
+	deviceSensor.addEventListener('reading',() => getCoordinates(deviceSensor));
+
+  // Starts the sensor
+  deviceSensor.start();
 
 } catch (error) {
 
@@ -24,8 +40,9 @@ try {
 
 setUserHeight();
 
-
-function reportError() {
+// This function displays the text "error" in the table cell beside the Current Tilt
+function reportError()
+{
 
 	document.getElementById("deviceTilt").innerHTML = "error";
 
@@ -36,20 +53,30 @@ function getCoordinates(theSensor){
 
 	let coordinateData = smoothen(theSensor);
 
-	let x_coordinate = coordinateData.x_value;  //x coordinate from coordinate data
-	let y_coordinate = coordinateData.y_value; //y coordinate from coordinate data
-	let z_coordinate = coordinateData.z_value; //z coordinate from coordinate data
-	let vector_e = coordinateData.e_value; //vector e from coordinate data
+	let x_coordinate = coordinateData.x_value;   // x coordinate from coordinate data
+	let y_coordinate = coordinateData.y_value;   // y coordinate from coordinate data
+	let z_coordinate = coordinateData.z_value;   // z coordinate from coordinate data
+	let vector_e = coordinateData.e_value;       // vector e from coordinate data
 
 	let data = [];
 	data[0] = Math.atan2(2*(vector_e*x_coordinate + y_coordinate*z_coordinate), 1 - 2*(Math.pow(x_coordinate,2)+Math.pow(y_coordinate,2)));
 
-	document.getElementById("deviceTilt").innerHTML = "beta: " + (data[0]*toDegree).toFixed(0) + "°";
+	document.getElementById("deviceTilt").innerHTML = "beta: " + (data[0]*TO_DEGREE).toFixed(0) + "°";
 	return data[0];
 
 }
 
+// Feature 2: Smoothing Sensor Data
 
+// smoothen()
+// This function smoothens the data describing the device orientation. It does this by calculating the average of the last 1000 sensor values of the device orientation. it uses
+// the .quaternion method from the Orientation Sensor API which returns a four-element array containing the unit quartenion describing the device orientation.
+//
+// argument: theSensor: this represents the variable containing the instance of the AbsoluteOrientationSensor class
+//
+// returns:
+//      This function returns the average unit quartenion describing the device orientation of 1000 sensor values
+//
 function smoothen(theSensor){
 
 	let count = 0;
@@ -59,6 +86,7 @@ function smoothen(theSensor){
 	let e_cummulative = 0;
 	let data_size = 1000;
 
+  // summing up 1000 sensor values of each component of the unit quartenion
 	while (count < data_size){
 		x_cummulative += theSensor.quaternion[0];
 		y_cummulative += theSensor.quaternion[1];
@@ -79,7 +107,9 @@ function smoothen(theSensor){
 
 }
 
+//Feature 3: Set Camera Height
 
+// This function prompts the user for the height of the device from the ground.
 function setUserHeight(){
 
 	let newHeight;
@@ -108,11 +138,12 @@ function setUserHeight(){
 
 }
 
+// Feature 4: Record Tilt Angles
 
 function setBaseAngle(){
 
 	baseAngle = getCoordinates(deviceSensor);
-	document.getElementById("baseAngle").innerHTML = (baseAngle*toDegree).toFixed(2) + "°";
+	document.getElementById("baseAngle").innerHTML = (baseAngle*TO_DEGREE).toFixed(2) + "°";
 
 	//mdl snackbar
 	var data = {
@@ -133,7 +164,7 @@ function setBaseAngle(){
 function setTopAngle(){
 
 	topAngle = getCoordinates(deviceSensor);
-	document.getElementById("topAngle").innerHTML = (topAngle*toDegree).toFixed(2) + "°";
+	document.getElementById("topAngle").innerHTML = (topAngle*TO_DEGREE).toFixed(2) + "°";
 
 	//mdl snackbar
 	var data = {
@@ -150,6 +181,8 @@ function setTopAngle(){
 
 }
 
+// Feature 5: Calculate the Distance to the object
+// Feature 6: Calculate the Height to the object
 
 function doCalculation(){
 
