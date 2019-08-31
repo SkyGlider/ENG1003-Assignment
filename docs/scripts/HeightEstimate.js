@@ -3,7 +3,8 @@ let userHeight = "1";
 let baseAngle = null;
 let topAngle = null;
 
-let  notification = document.querySelector('.mdl-js-snackbar');
+//mdl snackbar selector
+let notification = document.querySelector('.mdl-js-snackbar');
 let calculateButton = document.getElementById("calculateButton");
 
 
@@ -85,14 +86,10 @@ function setUserHeight(){
 	let newHeight;
 
 	do{
-
 		newHeight = prompt("Enter Your Height in metres (Reference Height): ",userHeight);
 
-
 		if(isNaN(newHeight)  || newHeight<0 || newHeight == null){
-
 			alert("invalid height");
-
 		}
 
 	}while(isNaN(newHeight)|| newHeight<0 || newHeight == null);
@@ -101,10 +98,8 @@ function setUserHeight(){
 	document.getElementById("heightOfCamera").innerHTML = userHeight + "m";
 
 	if (topAngle != null && baseAngle != null){
-
 		calculateButton.disabled = false;
-
-    }
+   	}
 
 }
 
@@ -122,10 +117,8 @@ function setBaseAngle(){
 	notification.MaterialSnackbar.showSnackbar(data);
 
 	if (topAngle != null){
-
 		calculateButton.disabled = false;
-
-  }
+  	}
 
 }
 
@@ -143,57 +136,31 @@ function setTopAngle(){
 	notification.MaterialSnackbar.showSnackbar(data);
 
 	if (baseAngle != null){
-
 		calculateButton.disabled = false;
-
-  }
+  	}
 
 }
 
 
 function doCalculation(){
+	
+	let distOut = document.getElementById("distanceOfObject");
+	let heightOut = document.getElementById("heightOfObject");
 
 	let objectDistance = parseFloat(userHeight) * Math.tan(baseAngle);
-	document.getElementById("distanceOfObject").innerHTML = objectDistance.toFixed(2) + "m";
-
 	let differenceOfAngle = topAngle - Math.PI/2 ;
 	let objectHeight = parseFloat(userHeight) + objectDistance * Math.tan(differenceOfAngle);
 
 	if(objectHeight>0){
-
-		document.getElementById("heightOfObject").innerHTML = objectHeight.toFixed(2)+"m";
-		calculateButton.disabled = true;
-
+		distOut.innerHTML = objectDistance.toFixed(2) + "m";
+		heightOut.innerHTML = objectHeight.toFixed(2)+"m";
 	}
-
-	else if(objectHeight==0){
-
-		alert("Base level should not be the same as the top level");
-		document.getElementById("heightOfObject").innerHTML = objectHeight.toFixed(2)+"m";
-		calculateButton.disabled = true;
-
+	else if (baseAngle>topAngle){
+		alert("Base level should not be higher than top level");
 	}
-
-	else{
-
-		if (baseAngle>topAngle){
-
-			alert("Base level should not be higher than top level");
-			document.getElementById("heightOfObject").innerHTML = "null";
-			document.getElementById("distanceOfObject").innerHTML = "null";
-			calculateButton.disabled = true;
-
-		}
-
-		else if (topAngle>baseAngle){
-
-			alert("Object's base level cannot be higher than the referenced height's base level");
-			document.getElementById("heightOfObject").innerHTML = "null";
-			document.getElementById("distanceOfObject").innerHTML = "null";
-			calculateButton.disabled = true;
-
-		}
-
+	else if(topAngle>baseAngle){
+		alert("Object's base level cannot be higher than the referenced height's base level");
 	}
+	calculateButton.disabled = true;
 
 }
