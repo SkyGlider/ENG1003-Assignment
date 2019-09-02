@@ -184,7 +184,7 @@ function doCalculation(){
 	let differenceOfAngle = topAngle - Math.PI/2 ;
 	let objectHeight = parseFloat(userHeight) + objectDistance * Math.tan(differenceOfAngle);
 
-	if(objectHeight>0){
+	if(objectHeight>0 && objectDistance>0){
 		distOut.innerHTML = objectDistance.toFixed(2) + "m";
 		heightOut.innerHTML = objectHeight.toFixed(2)+"m";
 	}
