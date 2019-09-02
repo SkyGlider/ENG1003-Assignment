@@ -2,7 +2,7 @@
  * Purpose: This file is designed to calculate the height and distance of objects from the user using data obtained from a device's sensors based on its orientation.
  * Team   : 190
  * Authors: Andrew Pang Yong Chen
- *	        Angel Ern Tang
+ *	    Angel Ern Tang
  *          Hong Xiang Huan
  *          Yong Kim Chim
 */
@@ -51,7 +51,15 @@ function reportError()
 
 }
 
-
+// getCoordinates()
+//
+// This function takes the values of the unit quartenion describing the device orientation and computes the current device tilt or beta angle using trigonometric formulas
+//
+// argument: theSensor: this represents the variable containing the instance of the AbsoluteOrientationSensor class
+//
+// returns:
+//      This function returns an array containing the beta angle of the device
+//
 function getCoordinates(theSensor){
 
 	let coordinateData = smoothen(theSensor);
@@ -116,7 +124,7 @@ function smoothen(theSensor){
 function setUserHeight(firstTime = false){
 
 	let newHeight;
-	
+
 	//loops until valid height input
 	do{
 		newHeight = prompt("Enter Your Height in metres (Reference Height): ",userHeight);
@@ -126,11 +134,11 @@ function setUserHeight(firstTime = false){
 		}
 
 	}while(isNaN(newHeight)|| newHeight<0 || newHeight == null);
-	
+
 	//update HTML and global var
 	userHeight = newHeight;
 	document.getElementById("heightOfCamera").innerHTML = userHeight + "m";
-	
+
 	//mdl snackbar
 	if(!firstTime){
 		var data = {
@@ -139,7 +147,7 @@ function setUserHeight(firstTime = false){
 		};
 		notification.MaterialSnackbar.showSnackbar(data);
 	}
-	
+
 	if (topAngle != null && baseAngle != null){
 		calculateButton.disabled = false;
    	}
@@ -148,6 +156,7 @@ function setUserHeight(firstTime = false){
 
 // Feature 4: Record Tilt Angles
 
+// This function records the current beta angle of the device when the "bottom" is tapped
 function setBaseAngle(){
 
 	baseAngle = getCoordinates(deviceSensor);
@@ -166,7 +175,7 @@ function setBaseAngle(){
 
 }
 
-
+// This function records the current beta angle of the device when the "top" button is tapped
 function setTopAngle(){
 
 	topAngle = getCoordinates(deviceSensor);
@@ -188,8 +197,9 @@ function setTopAngle(){
 // Feature 5: Calculate the Distance to the object
 // Feature 6: Calculate the Height to the object
 
+// This function computes the height and distance from the device of the object intended for height estimation
 function doCalculation(){
-	
+
 	let distOut = document.getElementById("distanceOfObject");
 	let heightOut = document.getElementById("heightOfObject");
 
