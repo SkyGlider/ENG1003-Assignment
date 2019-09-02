@@ -7,10 +7,12 @@
  *          Yong Kim Chim
 */
 
+//global vars
 const TO_DEGREE = (180/Math.PI);
-let userHeight = "1";
+let userHeight = 1;
 let baseAngle = null;
 let topAngle = null;
+let firstTime = true;
 
 //mdl snackbar selector
 let notification = document.querySelector('.mdl-js-snackbar');
@@ -39,7 +41,7 @@ try {
 
 }
 
-setUserHeight();
+setUserHeight(firstTime);
 
 // This function displays the text "error" in the table cell beside the Current Tilt
 function reportError()
@@ -111,10 +113,11 @@ function smoothen(theSensor){
 //Feature 3: Set Camera Height
 
 // This function prompts the user for the height of the device from the ground.
-function setUserHeight(){
+function setUserHeight(firstTime = false){
 
 	let newHeight;
-
+	
+	//loops until valid height input
 	do{
 		newHeight = prompt("Enter Your Height in metres (Reference Height): ",userHeight);
 
@@ -123,10 +126,20 @@ function setUserHeight(){
 		}
 
 	}while(isNaN(newHeight)|| newHeight<0 || newHeight == null);
-
+	
+	//update HTML and global var
 	userHeight = newHeight;
 	document.getElementById("heightOfCamera").innerHTML = userHeight + "m";
-
+	
+	//mdl snackbar
+	if(!firstTime){
+		var data = {
+  			message: 'Height Recorded',
+  			timeout: 2000
+		};
+		notification.MaterialSnackbar.showSnackbar(data);
+	}
+	
 	if (topAngle != null && baseAngle != null){
 		calculateButton.disabled = false;
    	}
